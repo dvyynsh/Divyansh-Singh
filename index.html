@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Alyssa Marlowe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Original Scroll Animation Setup -->
+    <div class="animation-container">
+        <div class="sticky-content">
+            <canvas id="scroll-canvas"></canvas>
+            
+            <!-- Hero Section overlaid on the canvas -->
+            <section class="hero">
+            <header class="top-bar">
+                <span class="role">WEB & UI DESIGNER</span>
+                <span class="year">✦ 2026</span>
+            </header>
+            
+            <h1 class="huge-title">PORTFOLIO</h1>
+            
+            <div class="hero-content">
+                <div class="left-content">
+                    <p class="creative-role">CREATIVE<br><strong>WEB & UI<br>DESIGNER</strong></p>
+                    <hr class="short-line">
+                    <p class="description">
+                        I design thoughtful digital experiences<br>
+                        that combine strategy, aesthetics, and<br>
+                        clarity to help brands stand out.
+                    </p>
+                    <h2 class="name">ALYSSA<br>MARLOWE</h2>
+                </div>
+                <div class="right-badge">
+                    <div class="badge-circle">
+                        <svg viewBox="0 0 100 100" class="rotating-text">
+                            <path id="circlePath" fill="none" d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
+                            <text>
+                                <textPath href="#circlePath">DESIGNING DIGITAL EXPERIENCES ✦ </textPath>
+                            </text>
+                        </svg>
+                        <div class="badge-inner">A</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Rest of the page content scrolls up over the animation -->
+    <div class="content-wrapper">
+        <!-- Selected Works Section -->
+        <section class="selected-works">
+            <div class="works-header">
+                <h3>SELECTED WORKS</h3>
+                <div class="line"></div>
+                <a href="#" class="view-all">VIEW ALL WORKS &rarr;</a>
+            </div>
+            
+            <div class="works-grid">
+                <div class="work-card">
+                    <div class="card-img dark-bg">
+                        <h2 class="card-title">VELURE</h2>
+                    </div>
+                    <h4>VELURE</h4>
+                    <p>FASHION BRAND<br>WEB DESIGN</p>
+                </div>
+                <div class="work-card">
+                    <div class="card-img light-bg">
+                        <h2 class="card-title dark-text">Calm<br>by Design</h2>
+                    </div>
+                    <h4>CALM BY DESIGN</h4>
+                    <p>INTERIOR STUDIO<br>WEB DESIGN</p>
+                </div>
+                <div class="work-card">
+                    <div class="card-img dark-bg">
+                        <h2 class="card-title">SAVOR<br>THE<br>MOMENT</h2>
+                    </div>
+                    <h4>SAVOR</h4>
+                    <p>RESTAURANT<br>WEB DESIGN</p>
+                </div>
+                <div class="work-card">
+                    <div class="card-img dark-bg">
+                        <h2 class="card-title small-title">ARCHITECTURE<br>THAT INSPIRES</h2>
+                    </div>
+                    <h4>FORMA STUDIO</h4>
+                    <p>ARCHITECTURE FIRM<br>WEB DESIGN</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services and Process Section -->
+        <section class="services-process">
+            <div class="sp-columns">
+                <!-- Services -->
+                <div class="services">
+                    <h3 class="section-title">SERVICES</h3>
+                    <ul class="service-list">
+                        <li>
+                            <span class="icon">✧</span>
+                            <div class="info">
+                                <strong>WEB DESIGN</strong>
+                                <p>Custom, responsive<br>website design</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">♡</span>
+                            <div class="info">
+                                <strong>UI / UX DESIGN</strong>
+                                <p>Intuitive interfaces<br>that engage</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">⊞</span>
+                            <div class="info">
+                                <strong>BRAND EXPERIENCE</strong>
+                                <p>Visual systems that<br>tell your story</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="icon">✦</span>
+                            <div class="info">
+                                <strong>DESIGN STRATEGY</strong>
+                                <p>From concept to<br>impact</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Process -->
+                <div class="process">
+                    <h3 class="section-title">MY PROCESS</h3>
+                    <ul class="process-list">
+                        <li>
+                            <span class="number">01</span>
+                            <div class="info">
+                                <strong>DISCOVER</strong>
+                                <p>Understanding your brand,<br>audience, and goals.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="number">02</span>
+                            <div class="info">
+                                <strong>DESIGN</strong>
+                                <p>Crafting wireframes and<br>visual concepts.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="number">03</span>
+                            <div class="info">
+                                <strong>DEVELOP</strong>
+                                <p>Bringing the design to life<br>with precision.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="number">04</span>
+                            <div class="info">
+                                <strong>DELIVER</strong>
+                                <p>Testing, refining, and<br>launching with care.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Quote Image -->
+                <div class="quote-image">
+                    <div class="quote-overlay">
+                        <span class="quote-mark">“</span>
+                        <blockquote>
+                            GOOD DESIGN IS NOT JUST HOW IT LOOKS, IT'S HOW IT WORKS AND HOW IT MAKES PEOPLE FEEL.
+                        </blockquote>
+                        <span class="quote-author">A.M.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-col brand-col">
+                <h2 class="footer-title">LET'S CREATE<br>SOMETHING<br>BEAUTIFUL ✦</h2>
+            </div>
+            <div class="footer-col">
+                <h4>LET'S CONNECT</h4>
+                <p>hello@alyssmarlowe.com</p>
+                <p>+1 (555) 123-4567</p>
+                <p>www.alyssmarlowe.com</p>
+                <p>Based in New York, USA</p>
+            </div>
+            <div class="footer-col">
+                <h4>FOLLOW</h4>
+                <p>Instagram</p>
+                <p>Behance</p>
+                <p>LinkedIn</p>
+                <p>Dribbble</p>
+            </div>
+            <div class="footer-col logo-col">
+                <div class="footer-logo">A M</div>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
