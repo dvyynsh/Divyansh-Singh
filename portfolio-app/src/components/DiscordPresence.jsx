@@ -1,136 +1,216 @@
-import React, { useEffect, useState } from 'react';
-import { Gamepad2, Headphones, MessageSquare, Circle } from 'lucide-react';
+import React, { useState, useEffect, useMemo } from 'react';
+import useDiscordPresence from '../hooks/useDiscordPresence';
+import Magnetic from './Magnetic';
 
-// Put your Discord User ID here to use Lanyard API
-// Example: "156114103033790464"
-const DISCORD_ID = "YOUR_DISCORD_ID_HERE";
+const DISCORD_ID = "1249751903060099164";
 
-const DiscordPresence = () => {
-  const [presence, setPresence] = useState(null);
-  const [loading, setLoading] = useState(true);
+const SpotifyPlayer = React.memo(({ spotify }) => {
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    if (DISCORD_ID === "YOUR_DISCORD_ID_HERE") {
-      // Mock data if ID is not provided
-      setPresence({
-        discord_status: "online",
-        discord_user: {
-          username: "Divyansh Singh",
-          avatar: "placeholder",
-        },
-        activities: [
-          { type: 0, name: "VS Code", state: "Coding Portfolio", details: "Working on React" }
-        ],
-        listening_to_spotify: false
-      });
-      setLoading(false);
-      return;
-    }
-
-    const ws = new WebSocket('wss://api.lanyard.rest/socket');
-
-    ws.onmessage = (event) => {
-      const { op, d, t } = JSON.parse(event.data);
-
-      if (op === 1) {
-        // Hello event, send initialize
-        ws.send(JSON.stringify({
-          op: 2,
-          d: { subscribe_to_id: DISCORD_ID }
-        }));
-      }
-
-      if (op === 0 && (t === "INIT_STATE" || t === "PRESENCE_UPDATE")) {
-        setPresence(d);
-        setLoading(false);
-      }
+    let animationFrame;
+    const updateProgress = () => {
+      if (!spotify?.timestamps) return;
+      const { start, end } = spotify.timestamps;
+      const now = Date.now();
+      const total = end - start;
+      const current = now - start;
+      
+      let percentage = (current / total) * 100;
+      if (percentage > 100) percentage = 100;
+      if (percentage < 0) percentage = 0;
+      
+      setProgress(percentage);
+      animationFrame = requestAnimationFrame(updateProgress);
     };
 
-    // Heartbeat
-    const heartbeat = setInterval(() => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ op: 3 }));
-      }
-    }, 30000);
+    animationFrame = requestAnimationFrame(updateProgress);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [spotify]);
 
-    return () => {
-      clearInterval(heartbeat);
-      ws.close();
-    };
-  }, []);
-
-  if (loading) {
-    return <div className="w-full h-32 glass rounded-2xl animate-pulse"></div>;
-  }
-
-  if (!presence) return null;
-
-  const statusColors = {
-    online: 'bg-green-500',
-    idle: 'bg-yellow-500',
-    dnd: 'bg-red-500',
-    offline: 'bg-gray-500'
-  };
-
-  const getStatusColor = () => statusColors[presence.discord_status] || statusColors.offline;
-
-  const mainActivity = presence.activities?.find(a => a.type === 0);
-  const isPlaying = !!mainActivity;
-  const isSpotify = presence.listening_to_spotify;
+  if (!spotify) return null;
 
   return (
-    <div className="glass-card p-6 w-full relative overflow-hidden group hover:border-accent/30 transition-all hover-target">
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-      
-      <div className="relative z-10 flex items-center gap-4">
-        {/* Avatar */}
-        <div className="relative">
-          {presence.discord_user.avatar !== "placeholder" ? (
-            <img 
-              src={`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${presence.discord_user.avatar}.png`} 
-              alt="Discord Avatar" 
-              className="w-16 h-16 rounded-full border border-white/10"
-            />
-          ) : (
-            <div className="w-16 h-16 rounded-full bg-secondary/50 flex items-center justify-center border border-white/10 text-xl font-display text-white">D</div>
-          )}
-          
-          <div className={`absolute bottom-0 right-0 w-4 h-4 rounded-full border-2 border-[#111] ${getStatusColor()}`}>
-            <div className="absolute inset-0 rounded-full animate-ping opacity-50" style={{ backgroundColor: 'inherit' }}></div>
-          </div>
-        </div>
-
-        {/* Info */}
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <h4 className="font-medium text-white">{presence.discord_user.username}</h4>
-            <span className="text-[10px] uppercase tracking-widest text-text-muted px-2 py-0.5 rounded-full bg-white/5 border border-white/10">
-              {presence.discord_status}
-            </span>
-          </div>
-
-          <div className="text-sm text-text-muted flex flex-col gap-1">
-            {isSpotify ? (
-              <div className="flex items-center gap-2 text-green-400">
-                <Headphones size={14} />
-                <span className="truncate max-w-[200px]">Listening to Spotify</span>
-              </div>
-            ) : isPlaying ? (
-              <div className="flex items-center gap-2 text-accent">
-                <Gamepad2 size={14} />
-                <span className="truncate max-w-[200px]">Playing {mainActivity.name}</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2">
-                <MessageSquare size={14} />
-                <span>Chilling online</span>
-              </div>
-            )}
+    <div className="mt-2 pt-2 border-t border-white/5 relative z-10">
+      <div className="flex items-center gap-1.5 text-xs text-text-muted mb-2">
+        <span className="text-green-400">🎵</span>
+        <span>Listening on Spotify</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <img 
+          src={spotify.album_art_url} 
+          alt={`Album art for ${spotify.album}`}
+          className="w-12 h-12 rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.2)] shrink-0"
+        />
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          <p className="text-xs font-medium text-white truncate" aria-label={`Song: ${spotify.song}`}>{spotify.song}</p>
+          <p className="text-[10px] text-text-muted truncate" aria-label={`Artist: ${spotify.artist}`}>{spotify.artist}</p>
+          {/* Smooth Progress Bar */}
+          <div className="w-full h-1 bg-white/10 rounded-full mt-1.5 overflow-hidden">
+            <div 
+              className="h-full bg-green-500 rounded-full transition-all duration-100 ease-linear" 
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
         </div>
       </div>
     </div>
   );
+});
+
+const ElapsedTime = React.memo(({ startTimestamp }) => {
+  const [elapsed, setElapsed] = useState('');
+
+  useEffect(() => {
+    if (!startTimestamp) return;
+    
+    const updateTime = () => {
+      const now = Date.now();
+      const diffInMinutes = Math.floor((now - startTimestamp) / 60000);
+      
+      if (diffInMinutes < 1) {
+        setElapsed('Active for < 1 min');
+      } else {
+        setElapsed(`Active for ${diffInMinutes} min`);
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
+    return () => clearInterval(interval);
+  }, [startTimestamp]);
+
+  if (!elapsed) return null;
+  return <div className="text-[10px] text-text-muted/70 mt-0.5">{elapsed}</div>;
+});
+
+const DiscordPresence = () => {
+  const { presence, loading, error } = useDiscordPresence(DISCORD_ID);
+
+  if (loading) {
+    return (
+      <div className="w-full bg-white/5 backdrop-blur-xl rounded-2xl h-16 animate-pulse border border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"></div>
+    );
+  }
+
+  if (error || !presence) {
+    return (
+      <div className="w-full bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-white/10 flex items-center gap-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+        <span className="w-2 h-2 rounded-full bg-gray-500"></span>
+        <span className="text-xs text-text-muted font-medium">⚫ Discord Unavailable</span>
+      </div>
+    );
+  }
+
+  const { discord_status, discord_user, activities, listening_to_spotify, spotify } = presence;
+
+  const statusConfig = {
+    online: { color: 'bg-green-500', label: 'Online' },
+    idle: { color: 'bg-yellow-500', label: 'Idle' },
+    dnd: { color: 'bg-red-500', label: 'Do Not Disturb' },
+    offline: { color: 'bg-gray-500', label: 'Offline' }
+  };
+
+  const statusInfo = statusConfig[discord_status] || statusConfig.offline;
+
+  // Find activities
+  const customStatus = activities.find(a => a.type === 4);
+  const playingActivity = activities.find(a => a.type === 0);
+  const codingActivity = activities.find(a => a.name === 'Visual Studio Code' || a.name === 'Code');
+  
+  // Choose the primary activity to display elapsed time for
+  const primaryActivity = codingActivity || playingActivity;
+
+  // Render Activity Text
+  const renderActivity = () => {
+    if (codingActivity) {
+      return (
+        <div className="flex flex-col">
+          <div className="flex items-center gap-1.5 text-xs text-text-muted truncate">
+            <span>💻</span>
+            <span className="truncate">Coding Visual Studio Code</span>
+          </div>
+        </div>
+      );
+    }
+    
+    if (playingActivity) {
+      return (
+        <div className="flex items-center gap-1.5 text-xs text-text-muted truncate">
+          <span>🎮</span>
+          <span className="truncate">{playingActivity.name}</span>
+        </div>
+      );
+    }
+
+    if (customStatus && customStatus.state) {
+      return (
+        <div className="flex items-center gap-1.5 text-xs text-text-muted truncate">
+          <span>💬</span>
+          <span className="truncate">{customStatus.state}</span>
+        </div>
+      );
+    }
+
+    if (!listening_to_spotify) {
+      return (
+        <div className="flex items-center gap-1.5 text-xs text-text-muted truncate">
+          <span className="truncate">Currently Online</span>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  return (
+    <Magnetic>
+      <div className="w-full bg-white/5 backdrop-blur-xl rounded-2xl p-3 border border-white/10 hover:border-white/20 transition-all duration-300 group hover-target overflow-hidden relative opacity-0 translate-y-2 discord-fade-in shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_12px_40px_rgb(0,0,0,0.2)] hover:backdrop-blur-2xl">
+      {/* Hover glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+      
+      {/* Top Row */}
+      <div className="flex items-center gap-2 mb-2 relative z-10">
+        <div className="relative">
+          {discord_user.avatar ? (
+            <img 
+              src={`https://cdn.discordapp.com/avatars/${DISCORD_ID}/${discord_user.avatar}.png`} 
+              alt={`${discord_user.username}'s Avatar`}
+              className="w-6 h-6 rounded-full border border-white/10 shrink-0"
+            />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-secondary/50 flex items-center justify-center border border-white/10 shrink-0">
+              <span className="text-xs text-white">D</span>
+            </div>
+          )}
+        </div>
+        <span className="text-sm font-medium text-white truncate">{discord_user.username}</span>
+        
+        {/* Status Dot */}
+        <div className="ml-auto relative flex items-center justify-center w-2.5 h-2.5 shrink-0" aria-label={`Status: ${statusInfo.label}`}>
+          {discord_status !== 'offline' && (
+            <div className={`absolute inset-0 rounded-full ${statusInfo.color} animate-ping opacity-75`}></div>
+          )}
+          <div className={`relative w-2 h-2 rounded-full ${statusInfo.color}`}></div>
+        </div>
+      </div>
+
+      {/* Second Row - Activity */}
+      <div className="relative z-10 flex flex-col">
+        {renderActivity()}
+        {primaryActivity?.timestamps?.start && (
+          <ElapsedTime startTimestamp={primaryActivity.timestamps.start} />
+        )}
+      </div>
+
+      {/* Spotify Section */}
+      {listening_to_spotify && spotify && (
+        <div key={spotify.track_id || spotify.song} className="fade-in">
+          <SpotifyPlayer spotify={spotify} />
+        </div>
+      )}
+    </div>
+    </Magnetic>
+  );
 };
 
-export default DiscordPresence;
+export default React.memo(DiscordPresence);

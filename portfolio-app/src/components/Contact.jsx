@@ -3,6 +3,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Mail, Globe, Code, MessageCircle } from 'lucide-react';
 import DiscordPresence from './DiscordPresence';
+import GitHubActivity from './GitHubActivity';
+import QuickLinks from './QuickLinks';
+import Magnetic from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -45,20 +48,28 @@ const Contact = () => {
               </a>
             </div>
             
-            <div className="mb-10 w-full max-w-sm">
+            <div className="mb-10 w-full max-w-sm flex flex-col gap-4">
               <DiscordPresence />
+              <GitHubActivity />
+              <QuickLinks />
             </div>
 
             <div className="flex gap-4">
-              <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
-                <Code size={20} />
-              </a>
-              <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
-                <Globe size={20} />
-              </a>
-              <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
-                <MessageCircle size={20} />
-              </a>
+              <Magnetic intensity={10}>
+                <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
+                  <Code size={20} />
+                </a>
+              </Magnetic>
+              <Magnetic intensity={10}>
+                <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
+                  <Globe size={20} />
+                </a>
+              </Magnetic>
+              <Magnetic intensity={10}>
+                <a href="#" className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/10 hover:border-white/30 transition-all hover-target">
+                  <MessageCircle size={20} />
+                </a>
+              </Magnetic>
             </div>
           </div>
           
@@ -77,9 +88,11 @@ const Contact = () => {
                 <label className="text-xs tracking-widest text-text-muted uppercase ml-2">Message</label>
                 <textarea rows="4" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent transition-colors hover-target resize-none" placeholder="Tell me about your project..."></textarea>
               </div>
-              <button type="button" className="mt-2 w-full py-4 bg-accent text-white rounded-xl font-medium tracking-wide hover:bg-blue-600 transition-colors hover-target flex items-center justify-center gap-2">
-                Send Message <Mail size={18} />
-              </button>
+              <Magnetic intensity={10}>
+                <button type="button" className="mt-2 w-full py-4 bg-accent text-white rounded-xl font-medium tracking-wide hover:bg-blue-600 transition-colors hover-target flex items-center justify-center gap-2">
+                  Send Message <Mail size={18} />
+                </button>
+              </Magnetic>
             </form>
           </div>
           

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ExternalLink, Code } from 'lucide-react';
+import Magnetic from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -72,46 +73,48 @@ const Projects = () => {
         
         <div className="flex flex-col gap-12">
           {projects.map((project, index) => (
-            <div key={index} className="project-card group relative w-full rounded-3xl overflow-hidden bg-[#111] border border-white/5 flex flex-col md:flex-row hover-target">
-              
-              {/* Image Container (placeholder with gradient) */}
-              <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-secondary/20">
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent z-10 transition-opacity duration-500 group-hover:opacity-50"></div>
-                {/* Decorative Pattern instead of image */}
-                <div className="w-full h-full opacity-30 transform scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out flex items-center justify-center">
-                  <div className="text-9xl text-white/5 font-display font-bold">
-                    {index + 1}
+            <Magnetic key={index} intensity={3}>
+              <div className="project-card group relative w-full rounded-3xl overflow-hidden bg-[#111] border border-white/5 flex flex-col md:flex-row hover-target">
+                
+                {/* Image Container (placeholder with gradient) */}
+                <div className="w-full md:w-1/2 h-64 md:h-auto relative overflow-hidden bg-secondary/20">
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent z-10 transition-opacity duration-500 group-hover:opacity-50"></div>
+                  {/* Decorative Pattern instead of image */}
+                  <div className="w-full h-full opacity-30 transform scale-100 group-hover:scale-110 transition-transform duration-1000 ease-out flex items-center justify-center">
+                    <div className="text-9xl text-white/5 font-display font-bold">
+                      {index + 1}
+                    </div>
                   </div>
                 </div>
-              </div>
-              
-              {/* Content Container */}
-              <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative z-20">
-                <span className="text-accent text-xs uppercase tracking-widest font-semibold mb-2">{project.category}</span>
-                <h4 className="text-3xl font-display mb-4 text-white group-hover:text-accent transition-colors duration-300">{project.title}</h4>
-                <p className="text-text-muted mb-6 text-sm leading-relaxed">
-                  {project.description}
-                </p>
                 
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {project.tech.map((t, i) => (
-                    <span key={i} className="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">
-                      {t}
-                    </span>
-                  ))}
+                {/* Content Container */}
+                <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center relative z-20">
+                  <span className="text-accent text-xs uppercase tracking-widest font-semibold mb-2">{project.category}</span>
+                  <h4 className="text-3xl font-display mb-4 text-white group-hover:text-accent transition-colors duration-300">{project.title}</h4>
+                  <p className="text-text-muted mb-6 text-sm leading-relaxed">
+                    {project.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {project.tech.map((t, i) => (
+                      <span key={i} className="text-xs px-3 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/10">
+                    <a href={project.link} className="flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors hover-target">
+                      <ExternalLink size={16} /> Live Demo
+                    </a>
+                    <a href={project.github} className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-white transition-colors hover-target">
+                      <Code size={16} /> Source Code
+                    </a>
+                  </div>
                 </div>
                 
-                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-white/10">
-                  <a href={project.link} className="flex items-center gap-2 text-sm font-medium hover:text-accent transition-colors">
-                    <ExternalLink size={16} /> Live Demo
-                  </a>
-                  <a href={project.github} className="flex items-center gap-2 text-sm font-medium text-text-muted hover:text-white transition-colors">
-                    <Code size={16} /> Source Code
-                  </a>
-                </div>
               </div>
-              
-            </div>
+            </Magnetic>
           ))}
         </div>
         

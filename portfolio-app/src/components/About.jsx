@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import CinematicPortrait from './CinematicPortrait';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -49,15 +50,8 @@ const About = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
-          {/* Left: Image (Placeholder or glassmorphic frame) */}
-          <div className="relative w-full aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden glass p-4">
-            <div className="w-full h-full rounded-2xl bg-secondary/30 relative overflow-hidden flex items-center justify-center border border-white/5">
-              <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-transparent"></div>
-              {/* Fallback avatar shape if no image provided */}
-              <div className="w-32 h-32 rounded-full bg-accent/20 blur-xl absolute"></div>
-              <span className="font-display text-4xl text-white/50 tracking-widest relative z-10">DIVYANSH</span>
-            </div>
-          </div>
+          {/* Left: Cinematic Portrait Image */}
+          <CinematicPortrait />
           
           {/* Right: About me */}
           <div>
